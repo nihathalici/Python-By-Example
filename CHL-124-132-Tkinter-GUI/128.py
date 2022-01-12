@@ -1,25 +1,22 @@
 """
 128
-1 kilometre = 0.6214 miles and 1
-mile = 1.6093 kilometres. Using
-these figures, make a program
-that will allow the user to
-convert between miles and
-kilometres.
+1 kilometre = 0.6214 miles and 1 mile = 1.6093 kilometres. 
+Using these figures, make a program that will allow the user to
+convert between miles and kilometres.
 """
 from tkinter import *
 
 def convert1():
     ml = textbox1.get()
-    ml = int(ml)
+    ml = round(float(ml))
     message = ml * 1.6093
     textbox1.delete(0, END)
     textbox1.insert(END, message)
     textbox1.insert(END, " km")
 
 def convert2():
-    km = textbox1.get()
-    km = int(km)
+    km = textbox2.get()
+    km = round(float(km))
     message = km * 0.6214
     textbox2.delete(0, END)
     textbox2.insert(END, message)
