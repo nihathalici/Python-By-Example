@@ -3,10 +3,10 @@
 # Python By Example by Nichola Lacey
 # Exercise 148: Pwords
 #
-# Solution by: Christopher Hagan
+# Solution by Christopher Hagan
 # https://github.com/chagan1985
 #
-# Modified by:
+# Modified by
 # https://github.com/nihathalici
 #
 #####
