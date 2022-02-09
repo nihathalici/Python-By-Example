@@ -45,7 +45,7 @@ def addtophonebook():
 
 def selectname():
   selectsurname = input("Enter a surname: ")
-  cursor.execute("SELECT * FROM Names WHERE surname = ?", [selectname])
+  cursor.execute("SELECT * FROM Names WHERE surname = ?", [selectsurname])
   for x in cursor.fetchall():
     print(x)
 
