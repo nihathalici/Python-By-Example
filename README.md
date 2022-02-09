@@ -11,3 +11,7 @@ Links and Appendix
 - Get the book: https://www.amazon.de/Python-Example-Learning-Program-Challenges/dp/1108716830
 - About Nichola Lacey and her works: https://www.nicholawilkin.com/
 
+GitHub Sources
+======================================================
+- Implementation of the exercises by Christopher Hagan  
+https://github.com/chagan1985/PythonByExample
