@@ -19,19 +19,19 @@ CREATE TABLE IF NOT EXISTS Authors(
 Name text PRIMARY KEY,
 PlaceofBirth text);""")
 
-cursor.execute(""" INSERT INTO Authors(Name, PlaceOfBirth)
+cursor.execute(""" INSERT INTO Authors(Name, PlaceofBirth)
 VALUES("Agatha Christie", "Torquay")""")
 db.commit()
 
-cursor.execute(""" INSERT INTO Authors(Name, PlaceOfBirth)
+cursor.execute(""" INSERT INTO Authors(Name, PlaceofBirth)
 VALUES("Cecelia Ahern", "Dublin")""")
 db.commit()
 
-cursor.execute(""" INSERT INTO Authors(Name, PlaceOfBirth)
+cursor.execute(""" INSERT INTO Authors(Name, PlaceofBirth)
 VALUES("J.K. Rowling", "Bristol")""")
 db.commit()
 
-cursor.execute(""" INSERT INTO Authors(Name, PlaceOfBirth)
+cursor.execute(""" INSERT INTO Authors(Name, PlaceofBirth)
 VALUES("Oscar Wilde", "Dublin")""")
 db.commit()
 
