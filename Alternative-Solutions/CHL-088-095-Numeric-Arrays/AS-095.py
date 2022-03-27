@@ -29,26 +29,3 @@ while not validNumber:
 
 for i in nums:
     print('{} divided by {} is {} (2 d.p.)'.format(i, divisor, round(i / divisor, 2)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
