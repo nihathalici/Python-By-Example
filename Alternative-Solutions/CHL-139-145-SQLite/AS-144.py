@@ -23,7 +23,7 @@ with sqlite3.connect("AS-BookInfo.db") as db:
 authorName = input("Enter the name of the author you would like to search for: ")
 
 cursor.execute("SELECT * FROM Books WHERE Author='{}'".format(authorName))
-file = open("ASS-BookInfoQuery.txt", "w")
+file = open("AS-BookInfoQuery.txt", "w")
 for book in cursor.fetchall():
     file.write('{} - {} - {} - {}\n'.format(book[0], book[1], book[2], book[3]))
 
