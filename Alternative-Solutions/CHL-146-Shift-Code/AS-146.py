@@ -23,16 +23,43 @@ def displayMenu():
     return choice
 
 def userEntry(operationText):
-    pass
-
+    print('\n{}\n-------------'.format(operationText))
+    message = input('Please enter the message you would like to {}:'.format(operationText))
+    offset = input('Now please enter the string offset you would like to apply: ')
+    return message, offset
+    
 def displayMessage(message):
-    pass
+    print('\n\n*******\nYour message is - {}\n*******\n'.format(message))
 
 def encrypText():
-    pass
+    message, offset = userEntry('Encrypt')
+
+    result = ''
+    for char in message:
+        codedValue = None
+        for encryptValue in range(0, len(codeString)):
+            if char == codeString[encryptValue]:
+                codedValue = encryptValue + int(offset)
+                break
+        codedValue = codedValue % len(codeString)
+        result += codeString[codedValue]
+
+    displayMessage(result)
 
 def decryptText():
-    pass
+    message, offset = userEntry('Decrypt')
+
+    result = ''
+    for char in message:
+        codedValue = None
+        for encryptValue in range(0, len(codeString)):
+            if char == codeString[encryptValue]:
+                codedValue = encryptValue - int(offset)
+                break
+        codedValue = codedValue % len(codeString)
+        result += codeString[codedValue]
+    
+    displayMessage(result)
 
 userSelection = '0'
 while (userSelection != '3'):
