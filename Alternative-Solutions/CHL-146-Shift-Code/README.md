@@ -7,6 +7,38 @@ A shift code is where a message can be easily encoded and is one of the simplest
 AS-146.py
 ========================================================
 ```Python3
+codeString = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+
+def displayMenu():
+    pass
+
+def userEntry(operationText):
+    pass
+
+def displayMessage(message):
+    pass
+
+def encryptText():
+    pass
+
+def decryptText():
+    pass
+
+
+userSelection = '0'
+while (userSelection != '3'):
+    userSelection = displayMenu()
+    if userSelection in ['1', '2', '3']:
+        if userSelection == '1':
+            encryptText()
+        elif userSelection == '2':
+            decryptText()
+
+    else:
+        print('\n***\nInvalid selection, please try again...\n***\n')
+
+print('\n\n*****\nQuitting program at user request\n*****\n\n')
+
 
 
 ```
