@@ -10,7 +10,12 @@ AS-146.py
 codeString = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
 
 def displayMenu():
-    pass
+    print("""\nMain Menu\n==========
+1) Make a code
+2) Decode a message
+3) Quit\n""")
+    choice = input('Enter your selection: ')
+    return choice
 
 def userEntry(operationText):
     pass
@@ -38,8 +43,6 @@ while (userSelection != '3'):
         print('\n***\nInvalid selection, please try again...\n***\n')
 
 print('\n\n*****\nQuitting program at user request\n*****\n\n')
-
-
 
 ```
 
