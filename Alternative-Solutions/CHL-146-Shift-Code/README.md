@@ -18,7 +18,10 @@ def displayMenu():
     return choice
 
 def userEntry(operationText):
-    pass
+    print('\n{}\n-------------'.format(operationText))
+    message = input('Please enter the message you would like to {}: '.format(operationText))
+    offset = input('Now please enter the string offset you would like to apply: ')
+    return message, offset
 
 def displayMessage(message):
     pass
