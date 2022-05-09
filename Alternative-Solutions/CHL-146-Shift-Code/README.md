@@ -24,13 +24,37 @@ def userEntry(operationText):
     return message, offset
 
 def displayMessage(message):
-    pass
+    print('\n\n*******\nYour message is - {}\n*******\n'.format(message))
 
 def encryptText():
-    pass
+    message, offset = userEntry('Encrypt')
+
+    result = ''
+    for char in message:
+        codedValue = None
+        for encryptValue in range(0, len(codeString)):
+            if char == codeString[encryptValue]:
+                codedValue = encryptValue + int(offset)
+                break
+        codedValue = codedValue % len(codeString)
+        result += codeString[codedValue]
+
+    displayMessage(result) 
 
 def decryptText():
-    pass
+    message, offset = userEntry('Decrypt')
+
+    result = ''
+    for char in message:
+        codedValue = None
+        for encryptValue in range(0, len(codeString)):
+            if char == codeString[encryptValue]:
+                codedValue = encryptValue - int(offset)
+                break
+        codedValue = codedValue % len(codeString)
+        result += codeString[codedValue]
+
+    displayMessage(result)
 
 
 userSelection = '0'
@@ -46,7 +70,6 @@ while (userSelection != '3'):
         print('\n***\nInvalid selection, please try again...\n***\n')
 
 print('\n\n*****\nQuitting program at user request\n*****\n\n')
-
 ```
 
 Sample Output
