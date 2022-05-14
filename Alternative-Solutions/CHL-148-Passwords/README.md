@@ -1,6 +1,8 @@
 Passwords
 ========================================================
-You are going to make an on-screen version of the board game "Mastermind".
+
+You need to create a program that will store the user ID and passwords for the users of a system.
+
 
 Passwords-AS-148.py
 ========================================================
