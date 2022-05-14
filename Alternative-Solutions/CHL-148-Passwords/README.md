@@ -2,10 +2,10 @@ Passwords
 ========================================================
 You are going to make an on-screen version of the board game "Mastermind".
 
-AS-147.py
+Passwords-AS-148.py
 ========================================================
 ```Python3
-import random 
+
 
 ```
 
