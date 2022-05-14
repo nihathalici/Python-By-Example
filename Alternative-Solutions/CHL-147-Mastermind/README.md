@@ -2,10 +2,22 @@ Mastermind
 ========================================================
 You are going to make an on-screen version of the board game "Mastermind".
 
-AS-146.py
+Mastermind-AS-147.py
 ========================================================
 ```Python3
-import random 
+
+import random
+
+listOfPossibleColours = ['Red', 'Green', 'Blue', 'Orange']
+
+def generateComputerSequence():
+    pass
+
+def guessSequence():
+    pass
+
+def checkGuessAgainstSequence(userGuess, correctSequence):
+    pass
 
 ```
 
