@@ -5,7 +5,6 @@ You are going to make an on-screen version of the board game "Mastermind".
 Mastermind-AS-147.py
 ========================================================
 ```Python3
-
 import random
 
 listOfPossibleColours = ['Red', 'Green', 'Blue', 'Orange']
@@ -17,11 +16,39 @@ def generateComputerSequence():
     
     return computerSequence
 
+
 def guessSequence():
-    pass
+    print('\n---\nMake a guess\nYou may enter simply the first letter of each colour\nSeparate each colour by a space\n---\n')
+    validGuess = False
+    while validGuess == False:
+        userGuess = input("My guess is: ")
+        newGuess = []
+        for colour in userGuess.split():
+            for possibleColour in listOfPossibleColours:
+                if colour.lower().startswith(possibleColour[0].lower()):
+                    newGuess.append(possibleColour)
+
+        if len(newGuess) == 4:
+            validGuess = True
+        else:
+            print('\n***This guess was not valid, please try again!\nAn example guess would be Orange Red Red Blue\n***\n')
+
+    return newGuess
+
 
 def checkGuessAgainstSequence(userGuess, correctSequence):
-    pass
+    correctPlace = wrongPlace = 0
+    coloursNotInTheCorrectSequence = []
+    for i in range(0, len(userGuess)):
+        if userGuess[i] == correctSequence[i]:
+            correctPlace += 1
+        else:
+            for j in range(0, len(correctSequence)):
+                if ((userGuess[i] == correctSequence[j]) and (userGuess[j] != correctSequence[j])):
+                    wrongPlace += 1
+
+    return correctPlace, wrongPlace
+
 
 numberOfuserGuesses = 0
 correctSequence = generateComputerSequence()
