@@ -13,10 +13,11 @@ fileName = 'userPw.csv'
 columnHeaders = ['User', 'Pword']
 
 def menuTitle(menuName):
-    pass
+    print('\n---\n{}\n---\n'.format(menuName))
+
 
 def statusMessage(message):
-    pass
+    print('\n+++\n{}\n'.format(message))
 
 def newPwRating():
     rating = 0
@@ -48,11 +49,9 @@ def newPwRating():
         else:
             print('\nThis password is too weak, please try again...\n')
             rating = 0
-
     return newPw
 
             
-
 def addUser():
     menuTitle('Add A New User')
     newUser = input('Enter the ID of the user: ')
@@ -63,17 +62,50 @@ def addUser():
         if not fileAlreadyExists:
             fileWriter.writeheader()
         fileWriter.writerow({ 'User' : '{}'.format(newUser), 'Pword': '{}'.format(newPw) })
-
     statusMessage("User Added")
 
 def createListOfUsers():
-    pass
+    userList = []
+    try:
+        with open(fileName, 'r') as csvFile:
+            fileReader = csv.DictReader(csvFile, fieldnames=columnHeaders)
+
+            next(fileReader)
+            for row in fileReader:
+                userList.append(row['User'])
+    except (FileNotFoundError):
+        print('File \'{}\' does not exist...'.format(fileName))
+    
+    return userList
+        
 
 def changePword():
-    pass
+    menuTitle('Change A Pword')
+    userToUpdate = input('Which User\'s Password should be updated: ')
+    if userToUpdate in createListOfUsers():
+        print('Updating pword for user {}...\n'.format(userToUpdate))
+        newPw = newPwRating()
+        updatedFile = '{}_up'.format(fileName)
+        with open(fileName, 'r') as originalFile, open(updatedFile, 'w') as newFile:
+            fileReader = csv.DictReader(originalFile, fieldnames=columnHeaders)
+            fileWriter = csv.DictWriter(newFile, fieldnames=columnHeaders)
+
+            for row in fileReader:
+                if (row['User'] == userToUpdate):
+                    fileWriter.writerow({'User' : '{}'.format(row['User']), 'Pword' : '{}'.format(newPw)})
+                else:
+                    fileWriter.writerow({'User' : '{}'.format(row['User']), 'Pword' : ''.format(row['Pword'])})
+        
+
+        shutil.move(updatedFile, fileName)
+        statusMessage('Pword Updated')
+
 
 def displayUsers():
-    pass
+    menuTitle('List Of Users')
+    for user in createListOfUsers():
+        print(user)
+    print('\n-----')
 
 userSelection = '0'
 while (userSelection != '4'):
@@ -92,7 +124,6 @@ while (userSelection != '4'):
             displayUsers()
     else:
         print('\n***\nInvalid selection\n***\n')
-
 
 ```
 
