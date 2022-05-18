@@ -13,10 +13,16 @@ the list area. The “Clear” button should clear both boxes.
 from tkinter import *
 
 def calculateTimesTables():
-    pass
+    multiplier = int(numberEntry.get())
+    for i in range(1, 13):
+        timesTableBox.insert('end', '{} x {} = {}'.format(i, multiplier, i*multiplier))
+    numberEntry.delete(0, 'end')
+    numberEntry.focus()
 
 def clearEntryBoxes():
-    pass
+    numberEntry.delete(0, 'end')
+    timesTableBox.delete(0, 'end')
+    numberEntry.focus()
 
 window = Tk()
 window.geometry("500x500")
