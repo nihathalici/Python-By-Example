@@ -31,37 +31,112 @@ def clearNewArtistFields():
 
 
 def clearNewArtworkFields():
-    pass
+    titleEntry.delete(0, 'end')
+    mediumEntry.delete(0, 'end')
+    priceEntry.delete(0, 'end')
+    artistCombobox.set('')
+
 
 def clearArtworkTree():
-    pass
+    for i in artworkFrame.get_children():
+        artworkFrame.delete(i)
 
 def displayArtist(artistKey):
-    pass
+    artistListBox.delete(0, 'end')
+    if (artistKey == 0):
+        artistListBox.insert('end', 'No Artist Selected')
+    else:
+        contentsOfArtistTable = cursor.execute("""SELECT Name, Address, County, Town, Postcode FROM artists WHERE ArtistID={};""".format(artistKey))
+        name, address, county, town, postcode = contentsOfArtistTable.fetchone()
+        artistListBox.insert('end', 'Artist Name : {}'.format(name))
+        artistListBox.insert('end', '')
+        artistListBox.insert('end', 'Artist Address : {}'.format(address))
+        artistListBox.insert('end', 'County : {}'.format(county))
+        if (town):
+            artistListBox.insert('end', 'Town : {}'.format(town))
+        artistListBox.insert('end', 'Postcode : {}'.format(postcode))
+
+
 
 def displayArtwork(contentsOfPiecesOfArt):
-    pass
+    clearArtworkTree()
+    if (contentsOfPiecesOfArt):
+        for pieceOfArt in contentsOfPiecesOfArt:
+            artworkFrame.insert('', 'end', text=pieceOfArt[0], values=(pieceOfArt[1], pieceOfArt[2], pieceOfArt[3]))
+    else:
+        artworkFrame.insert('', 'end', text='Empty', values=('No artwork exists', '', ''))
+
 
 def loadAllArtwork():
-    pass
+    contentsOfPiecesOfArt = cursor.execute("""SELECT PieceID, Title, Medium, Price FROM PiecesOfArt""")
+    displayArtwork(contentsOfPiecesOfArt)
 
 def clearSearchFilter():
-    pass
+    searchCriteriaCombobox.set('')
+    searchForEntry.delete(0, 'end')
+    loadAllArtwork()
 
 def artworkSelected(selection):
-    pass
+    if (artworkFrame.item(artworkFrame.focus())['text']):
+        selectedArtist = cursor.execute("""SELECT ArtistID FROM PiecesOfArt WHERE PieceID={}""".format(artworkFrame.item(artworkFrame.focus())['text']))
+        selectedArtistKey = selectedArtist.fetchone()[0]
+    else:
+        selectedArtistKey = 0
+    
+    displayArtist(artistKey=selectedArtistKey)
 
 def addArtist():
-    pass
+    if (nameEntry.get() and addressEntry.get() and countyEntry.get() and postcodeEntry.get()):
+        cursor.execute("""INSERT INTO Artists(Name, Address, Town, County, Postcode)
+        VALUES('{}', '{}', '{}', '{}', '{}')""".format(nameEntry.get(), addressEntry.get(), townEntry.get(), countyEntry.get(), postcodeEntry.get()))
+        db.commit()
+        clearNewArtistFields()
+        generateListOfArtists()
+    else:
+        tkinter.messagebox.showerror('Data Error', 'Incomplete Artist entry!')
 
 def addPieceOfArt():
-    pass
+    if (titleEntry.get() and mediumEntry.get() and priceEntry.get() and artistCombobox.get()):
+        artistID = artistCombobox.get().split()[0]
+        cursor.execute("""INSERT INTO PiecesOfArt(ArtistID, Title, Medium, Price)
+        VALUES('{}', '{}', '{}', '{}')""".format(int(artistID), titleEntry.get(), mediumEntry.get(), int(priceEntry.get())))
+        db.commit()
+        loadAllArtwork()
+        clearNewArtistFields()
+    else:
+        tkinter.messagebox.showerror('Data Error', 'Incomplete Artwork entry!')
+
+
 
 def pieceOfArtSold():
-    pass
+    focusedItem = artworkFrame.item(artworkFrame.focus())
+    if (focusedItem['text']):
+        artworkToBeRemoved = cursor.execute("""SELECT PieceID, ArtistID, Title, Medium, Price FROM PiecesOfArt WHERE PieceID={}""".format(focusedItem['text']))
+        pieceID, artistID, title, medium, price = artworkToBeRemoved.fetchone()
+        artist = cursor.execute("""SELECT Name FROM Artists WHERE ArtistID={}""".format(artistID)).fetchone()[0]
+
+        soldFileExists = os.path.isfile(soldArtworkFile)
+        with open(soldArtworkFile, 'a') as csvFile:
+            fileWriter = csv.DictWriter(csvFile, fieldnames=soldArtworkColumnHeaders)
+            if not soldFileExists:
+                fileWriter.writeheader()
+            fileWriter.writerow({'PieceID': pieceID, 'Artist': artist, 'Title': title, 'Medium': medium, 'Price': price})
+        
+        cursor.execute("""DELETE FROM PiecesOfArt WHERE PieceID={}""".format(focusedItem['text']))
+        db.commit()
+        loadAllArtwork()
+    else:
+        tkinter.messagebox.showerror('Selection Error', 'No artwork selected!')
 
 def searchArtwork():
-    pass
+    if (searchCriteriaCombobox.get() == 'Artist'):
+        contentsOfPiecesOfArt = cursor.execute("""SELECT PieceID, Title, Medium, Price FROM PiecesOfArt WHERE ArtistID IN 
+        (SELECT ArtistID FROM Artists WHERE Name='{}');""".format(searchForEntry.get())).fetchall()
+    else:
+        contentsOfPiecesOfArt = cursor.execute("""SELECT PieceID, Title, Medium, Price FROM PiecesOfArt WHERE {}='{}'""".format
+        (searchCriteriaCombobox.get(), searchForEntry.get())).fetchall()
+
+    displayArtwork(contentsOfPiecesOfArt)
 
 with sqlite3.connect("ArtGallery.db") as db:
     cursor = db.cursor()
@@ -168,7 +243,7 @@ sellArtworkButton.place(x=750, y=700, width=150, height=50)
 # SUBFRAME: newArtworkFrame
 
 newArtworkFrame = LabelFrame(text='Add new artwork')
-newArtworkFrame.place(x=75, y=825, width=130, height=850)
+newArtworkFrame.place(x=75, y=825, height=130, width=850)
 
 titleLabel = Label(text='Title -')
 titleLabel.place(x=100, y=850, width=75, height=25)
