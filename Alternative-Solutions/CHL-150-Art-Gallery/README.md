@@ -18,13 +18,26 @@ soldArtworkFile = 'soldArtwork.csv'
 soldArtworkColumnHeaders = ['PieceID', 'Artist', 'Title', 'Medium', 'Price']
 
 def generateListOfArtists():
-    pass
+    artistList = []
+    artistQuery = cursor.execute("""SELECT ArtistID, Name FROM Artists;""")
+    for artist in artistQuery.fetchall():
+        artistList.append('{} - {}'.format(artist[0], artist[1]))
+    
+    artistCombobox.config(values=artistList)
+
 
 def clearNewArtistFields():
-    pass
+    nameEntry.delete(0, 'end')
+    addressEntry.delete(0, 'end')
+    townEntry.delete(0, 'end')
+    countyEntry.delete(0, 'end')
+    postcodeEntry.delete(0, 'end')
 
 def clearNewArtworkFields():
-    pass
+    titleEntry.delete(0, 'end')
+    mediumEntry.delete(0, 'end')
+    priceEntry.delete(0, 'end')
+    artistCombobox.set('')
 
 def clearArtworkTree():
     pass
@@ -50,7 +63,7 @@ def addArtist():
 def addPieceOfArt():
     pass
 
-def addPieceOfArtSold():
+def pieceOfArtSold():
     pass
 
 def searchArtwork():
@@ -120,6 +133,74 @@ addArtistButton = Button(text='Add Artist', command=addArtist)
 addArtistButton.place(x=740, y=215, width=75, height=50)
 
 # Artwork frame and contents
+artworkFrame = LabelFrame(text='Artwork')
+artworkFrame.place(x=50, y=375, width=900, height=600)
+artworkFrame = ttk.Treeview(show='headings', column=('Title', 'Medium', 'Price'), selectmode='browse')
+artworkFrame.column('Title', width=300, anchor='w')
+artworkFrame.heading('Title', text='Title')
+artworkFrame.column('Medium', width=150, anchor='center')
+artworkFrame.heading('Medium', text='Medium')
+artworkFrame.column('Price', width=150, anchor='e')
+artworkFrame.heading('Price', text='Price (£)')
+artworkFrame.bind('<<TreeviewSelect>>', artworkSelected)
+artworkFrame.place(x=75, y=400, width=600, height=400)
+loadAllArtwork()
+
+# SUBFRAME: filtersFrame
+
+filtersFrame = LabelFrame(text='Filter')
+filtersFrame.place(x=750, y=400, width=150, height=225)
+
+searchLabel = Label(text='Search criteria')
+searchLabel.place(x=775, y=425, width=100, height=25)
+
+searchCriteriaCombobox = ttk.Combobox(values=['Artist', 'Medium', 'Price'])
+searchCriteriaCombobox.place(x=775, y=450, width=100, height=25)
+
+searchForLabel = Label(text='Search for')
+searchForLabel.place(x=775, y=475, width=100, height=25)
+
+searchForEntry = Entry(text='')
+searchForEntry.place(x=775, y=500, width=100, height=25)
+
+searchButton = Button(text='Search', command=searchArtwork)
+searchButton.place(x=775, y=545, width=100, height=25)
+
+clearFilterButton = Button(text='Clear Filter', command=clearSearchFilter)
+clearFilterButton.place(x=775, y=585, width=100, height=25)
+
+sellArtworkButton = Button(text='Mark Artwork\n   as sold', command=pieceOfArtSold)
+sellArtworkButton.place(x=750, y=700, width=150, height=50)
+
+# SUBFRAME: newArtworkFrame
+
+newArtworkFrame = LabelFrame(text='Add new artwork')
+newArtworkFrame.place(x=75, y=825, width=850, height=130)
+
+titleLabel = Label(text='Title -')
+titleLabel.place(x=100, y=850, width=75, height=25)
+titleEntry = Entry(text='')
+titleEntry.place(x=175, y=850, width=400, height=25)
+
+mediumLabel = Label(text='Medium -')
+mediumLabel.place(x=100, y=875, width=75, height=25)
+mediumEntry = Entry(text='')
+mediumEntry.place(x=175, y=875, width=100, height=25)
+
+priceLabel = Label(text='Price (£) -')
+priceLabel.place(x=100, y=900, width=75, height=25)
+priceEntry = Entry(text='')
+priceEntry.place(x=175, y=900, width=100, height=25)
+
+artistLabel = Label(text='Artist -')
+artistLabel.place(x=300, y=885, width=75, height=25)
+
+artistCombobox = ttk.Combobox(values='')
+artistCombobox.place(x=400, y=885, width=150, height=25)
+generateListOfArtists()
+
+addPieceOfArtButton = Button(text='Add Piece of\n    Art', command=addPieceOfArt)
+addPieceOfArtButton.place(x=700, y=870, width=100, height=50)
 
 window.mainloop()
 
