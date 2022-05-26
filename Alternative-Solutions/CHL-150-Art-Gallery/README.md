@@ -106,7 +106,25 @@ def addPieceOfArt():
         tkinter.messagebox.showerror('Data Error', 'Incomplete Artwork entry!')
 
 def pieceOfArtSold():
-    pass
+    focusedItem = artworkFrame.item(artworkFrame.focus())
+    if (focusedItem['text']):
+        artworkToBeRemoved = cursor.execute("""SELECT PieceID, ArtistID, Title, Medium, Price FROM PiecesOfArt WHERE PieceID={}""".format(focusedItem['text']))
+        pieceID, artistID, title, medium, price = artworkToBeRemoved.fetchone()
+        artist = cursor.execute("""SELECT Name FROM Artists WHERE ArtistID={}""".format(artistID)).fetchone()[0]
+
+        soldFileExists = os.path.isfile(soldArtworkFile)
+        with open(soldArtworkFile, 'a') as csvFile:
+            fileWriter = csv.DictWriter(csvFile, fieldnames=soldArtworkColumnHeaders)
+            if not soldFileExists:
+                fileWriter.writeheader()
+            fileWriter.writerow({'PieceID': pieceID, 'Artist': artist, 'Title': title, 'Medium': medium, 'Price': price})
+
+        cursor.execute("""DELETE FROM PiecesOfArt WHERE PieceID={}""".format(focusedItem['text']))
+        db.commit()
+        loadAllArtwork()
+    else:
+        tkinter.messagebox.showerror('Selection Error', 'No artwork selected!')
+
 
 def searchArtwork():
     pass
