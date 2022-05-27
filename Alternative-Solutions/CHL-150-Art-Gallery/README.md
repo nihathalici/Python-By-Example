@@ -127,7 +127,13 @@ def pieceOfArtSold():
 
 
 def searchArtwork():
-    pass
+    if (searchCriteriaCombobox.get() == 'Artist'):
+        contentsOfPiecesOfArt = cursor.execute("""SELECT PieceID, Title, Medium, Price FROM PiecesOfArt WHERE ArtistID IN
+        (SELECT ArtistID FROM Artists WHERE Name='{}');""".format(searchForEntry.get())).fetchall()
+    else:
+        contentsOfPiecesOfArt = cursor.execute("""SELECT PieceID, Title, Medium, Price FROM PiecesOfArt WHERE {}='{}'""".format(searchCriteriaCombobox.get(), searchForEntry.get())).fetchall()
+    
+    displayArtwork(contentsOfPiecesOfArt)
 
 with sqlite3.connect("ArtGallery.db") as db:
     cursor = db.cursor()
@@ -265,6 +271,7 @@ addPieceOfArtButton.place(x=700, y=870, width=100, height=50)
 window.mainloop()
 
 db.close()
+
 ```
 
 Sample Output
